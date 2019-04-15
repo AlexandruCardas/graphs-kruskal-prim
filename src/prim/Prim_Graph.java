@@ -88,7 +88,7 @@
 //
 //		dist[s] = 0;
 //
-//		abstract_data_types.Max_Heap h = new abstract_data_types.Max_Heap(vertex_amount, dist, hPos);
+//		abstract_data_types.Max_Heap_Sifting h = new abstract_data_types.Max_Heap_Sifting(vertex_amount, dist, hPos);
 //		h.insert(s);
 //
 //		while ( ...)

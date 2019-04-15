@@ -11,8 +11,28 @@ public class Main
 		Adjacency_List my_list = new Adjacency_List(file_name);
 		my_list.print_adj();
 
-		Max_Heap heap = new Max_Heap();
-		heap.test();
+//		Max_Heap_Sifting maxHeap = new Max_Heap_Sifting();
+//		maxHeap.test();
+
+		int[] A = {Integer.MIN_VALUE , 16, 14, 10, 8, 7, 9, 3, 2, 4, 1};
+		Max_Heap maxHeap = new Max_Heap(A);
+		maxHeap.buildMaxHeap();
+//		abstract_data_types.Min_Heap minHeap = new abstract_data_types.Min_Heap();
+//		minHeap.buildMinHeap(A);
+		System.out.println(maxHeap.extractMaxHeap());
+		System.out.println(maxHeap.extractMaxHeap());
+		System.out.println(maxHeap.extractMaxHeap());
+//		maxHeap.heapSort();
+		System.out.println(maxHeap.extractMaxHeap());
+//		maxHeap.heapSort();
+
+		System.out.println();
+
+		maxHeap.print_heap();
+
+
+
+//		System.out.println(maxHeap.heapMaximum());
 
 		//System.out.print("\nInput name of file with graph definition: ");
 		//fname = Console.ReadLine();

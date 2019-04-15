@@ -59,7 +59,7 @@
 //		mst = new abstract_data_types.Edge[V - 1];
 //
 //		// priority queue for indices of array of edges
-//		abstract_data_types.Max_Heap h = new abstract_data_types.Max_Heap(E, edge);
+//		abstract_data_types.Max_Heap_Sifting h = new abstract_data_types.Max_Heap_Sifting(E, edge);
 //
 //		// create partition of singleton sets for the vertices
 //
