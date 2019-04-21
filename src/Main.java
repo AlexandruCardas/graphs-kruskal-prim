@@ -1,5 +1,5 @@
 import abstract_data_types.Adjacency_List;
-import abstract_data_types.Max_Heap;
+import abstract_data_types.Min_Heap;
 
 import java.io.IOException;
 
@@ -14,22 +14,26 @@ public class Main
 //		Max_Heap_Sifting maxHeap = new Max_Heap_Sifting();
 //		maxHeap.test();
 
-		int[] A = {Integer.MIN_VALUE , 16, 14, 10, 8, 7, 9, 3, 2, 4, 1};
-		Max_Heap maxHeap = new Max_Heap(A);
-		maxHeap.buildMaxHeap();
-//		abstract_data_types.Min_Heap minHeap = new abstract_data_types.Min_Heap();
-//		minHeap.buildMinHeap(A);
-		System.out.println(maxHeap.extractMaxHeap());
-		System.out.println(maxHeap.extractMaxHeap());
-		System.out.println(maxHeap.extractMaxHeap());
+		int[] A = {Integer.MIN_VALUE, 16, 14, 10, 8, 7, 9, 3, 2, 4, 1};
+//		Max_Heap maxHeap = new Max_Heap(A);
+//		maxHeap.buildMaxHeap();
+		Min_Heap minHeap = new Min_Heap(A);
+		minHeap.buildMinHeap();
+//		System.out.println(maxHeap.extractMaxHeap());
+//		System.out.println(maxHeap.extractMaxHeap());
+//		System.out.println(maxHeap.extractMaxHeap());
 //		maxHeap.heapSort();
-		System.out.println(maxHeap.extractMaxHeap());
+//		System.out.println(minHeap.extractMinHeap());
+//		System.out.println(minHeap.extractMinHeap());
+//		System.out.println(minHeap.extractMinHeap());
+//		System.out.println(minHeap.extractMinHeap());
 //		maxHeap.heapSort();
+		minHeap.heapSort();
 
 		System.out.println();
 
-		maxHeap.print_heap();
-
+//		maxHeap.print_heap();
+		minHeap.print_heap();
 
 
 //		System.out.println(maxHeap.heapMaximum());

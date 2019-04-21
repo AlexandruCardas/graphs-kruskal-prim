@@ -5,13 +5,12 @@ import common.Common_Functions;
 public class Max_Heap extends Common_Functions
 {
 	public int[] A;
+	private int heapSize = 0;
 
 	public Max_Heap(int[] A)
 	{
 		this.A = A;
 	}
-
-	private int heapSize = 0;
 
 	public int parent(int i)
 	{
@@ -95,7 +94,7 @@ public class Max_Heap extends Common_Functions
 
 	public void print_heap()
 	{
-		System.out.println(A.length);
+		heapSize = A.length - 1;
 
 		for (int i = 1; i <= heapSize; i++)
 		{
