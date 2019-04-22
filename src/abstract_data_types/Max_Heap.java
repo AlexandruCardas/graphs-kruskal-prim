@@ -4,7 +4,7 @@ import common.Common_Functions;
 
 public class Max_Heap extends Common_Functions
 {
-	public int[] A;
+	private int[] A;
 	private int heapSize = 0;
 
 	public Max_Heap(int[] A)
@@ -17,17 +17,17 @@ public class Max_Heap extends Common_Functions
 		return i / 2;
 	}
 
-	public int left(int i)
+	private int left(int i)
 	{
 		return 2 * i;
 	}
 
-	public int right(int i)
+	private int right(int i)
 	{
 		return 2 * i + 1;
 	}
 
-	public void maxHeapify(int i)
+	private void maxHeapify(int i)
 	{
 		int l = left(i);
 		int r = right(i);
@@ -52,7 +52,7 @@ public class Max_Heap extends Common_Functions
 		}
 	}
 
-	public void buildMaxHeap()
+	private void buildMaxHeap()
 	{
 		for (int i = (A.length - 1) / 2; i >= 1; i--)
 		{

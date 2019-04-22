@@ -1,5 +1,6 @@
 import abstract_data_types.Adjacency_List;
 import abstract_data_types.Min_Heap;
+import abstract_data_types.MyExceptions;
 
 import java.io.IOException;
 
@@ -7,9 +8,22 @@ public class Main
 {
 	public static void main(String[] args) throws IOException
 	{
-		String file_name = "data/wGraph3.txt";
+		String file_name = "data/graph2.txt";
 		Adjacency_List my_list = new Adjacency_List(file_name);
 		my_list.print_adj();
+		System.out.println();
+		try
+		{
+			my_list.bfs(5);
+		} catch (MyExceptions myExceptions)
+		{
+			myExceptions.printStackTrace();
+		}
+		System.out.println();
+		my_list.dfsIterative(7);
+		System.out.println();
+		my_list.dfsRecursive(7);
+
 
 //		Max_Heap_Sifting maxHeap = new Max_Heap_Sifting();
 //		maxHeap.test();
@@ -28,12 +42,12 @@ public class Main
 //		System.out.println(minHeap.extractMinHeap());
 //		System.out.println(minHeap.extractMinHeap());
 //		maxHeap.heapSort();
-		minHeap.heapSort();
-
-		System.out.println();
-
-//		maxHeap.print_heap();
-		minHeap.print_heap();
+//		minHeap.heapSort();
+//
+//		System.out.println();
+//
+////		maxHeap.print_heap();
+//		minHeap.print_heap();
 
 
 //		System.out.println(maxHeap.heapMaximum());
