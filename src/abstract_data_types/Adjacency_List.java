@@ -9,12 +9,27 @@ import java.io.IOException;
 public class Adjacency_List extends Common_Functions
 {
 	private Node[] adjacency_list;
-	private Node[] rec;
-	private boolean[] visited;
 	private int vertex_amount;
-	private QueueLL queue = new QueueLL();
-	private Stack stack = new Stack();
 
+	public int getVertex_amount()
+	{
+		return vertex_amount;
+	}
+
+	public Node[] getAdjacency_list()
+	{
+		return adjacency_list;
+	}
+
+	public void setAdjacency_list(Node[] adjacency_list)
+	{
+		this.adjacency_list = adjacency_list;
+	}
+
+	public void setVertex_amount(int vertex_amount)
+	{
+		this.vertex_amount = vertex_amount;
+	}
 
 	public Adjacency_List(String graph_file) throws IOException
 	{
@@ -81,36 +96,6 @@ public class Adjacency_List extends Common_Functions
 			System.out.println();
 		}
 	}
-
-	public void bfs(int s) throws MyExceptions
-	{
-		Node[] adj = adjacency_list.clone();
-		int v;
-		visited = new boolean[vertex_amount + 1];
-
-		queue.enQueue(s);
-
-		while (!queue.isEmpty())
-		{
-			v = queue.deQueue();
-
-			if (!visited[v])
-			{
-				visited[v] = true;
-				System.out.println(toChar(v));
-
-				while (!isEmpty(adj[v]))
-				{
-					if (!visited[adj[v].vert])
-					{
-						queue.enQueue(adj[v].vert);
-					}
-					adj[v] = adj[v].next;
-				}
-			}
-		}
-	}
-
 	// just in case
 	public int size(int index)
 	{
@@ -124,60 +109,5 @@ public class Adjacency_List extends Common_Functions
 		return c;
 	}
 
-	public void dfsIterative(int s)
-	{
-		Node[] adj = adjacency_list.clone();
-		visited = new boolean[vertex_amount + 1];
 
-		stack.push(s);
-		int v = 0;
-		while (!stack.isEmpty())
-		{
-			try
-			{
-				v = stack.pop();
-			} catch (MyExceptions myExceptions)
-			{
-				myExceptions.printStackTrace();
-			}
-
-			if (!visited[v])
-			{
-				visited[v] = true;
-				System.out.println(toChar(v));
-				while (!isEmpty(adj[v]))
-				{
-					if (!visited[adj[v].vert])
-					{
-						stack.push(adj[v].vert);
-					}
-					adj[v] = adj[v].next;
-				}
-			}
-		}
-	}
-
-	public void dfsRecursive(int s)
-	{
-		rec = adjacency_list.clone();
-		visited = new boolean[vertex_amount + 1];
-		dfsVisit(s, visited);
-	}
-
-	private void dfsVisit(int v, boolean[] visited)
-	{
-		visited[v] = true;
-		System.out.println(toChar(v));
-
-		while (!isEmpty(rec[v]))
-		{
-			int destination = rec[v].vert;
-			rec[v] = rec[v].next;
-
-			if (!visited[destination])
-			{
-				dfsVisit(destination, visited);
-			}
-		}
-	}
 }

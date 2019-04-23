@@ -2,12 +2,12 @@ package abstract_data_types;
 
 import common.Common_Functions;
 
-class QueueLL extends Common_Functions implements Queue
+public class QueueLL extends Common_Functions implements Queue
 {
 	private Node head;
 	private Node tail;
 
-	QueueLL()
+	public QueueLL()
 	{
 		head = null;
 		tail = null;

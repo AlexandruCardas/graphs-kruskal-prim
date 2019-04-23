@@ -2,7 +2,7 @@ package abstract_data_types;
 
 public class Node
 {
-	int vert;
+	public int vert;
 	int wgt;
-	Node next;
+	public Node next;
 }

@@ -2,11 +2,11 @@ package abstract_data_types;
 
 import common.Common_Functions;
 
-class Stack extends Common_Functions
+public class Stack extends Common_Functions
 {
 	private Node top;
 
-	Stack()
+	public Stack()
 	{
 		top = null;
 	}

@@ -1,6 +1,8 @@
 import abstract_data_types.Adjacency_List;
 import abstract_data_types.Min_Heap;
 import abstract_data_types.MyExceptions;
+import searching.BFS;
+import searching.DFS;
 
 import java.io.IOException;
 
@@ -8,22 +10,31 @@ public class Main
 {
 	public static void main(String[] args) throws IOException
 	{
+		// init files
 		String file_name = "data/graph2.txt";
 		Adjacency_List my_list = new Adjacency_List(file_name);
+
+		BFS bfs = new BFS(my_list.getAdjacency_list(), my_list.getVertex_amount());
+		DFS dfs = new DFS(my_list.getAdjacency_list(), my_list.getVertex_amount());
+
+		// print the adjacency list
 		my_list.print_adj();
+		System.out.println();
+
 		System.out.println();
 		try
 		{
-			my_list.bfs(5);
+			bfs.breadthFirstSearch(5);
 		} catch (MyExceptions myExceptions)
 		{
 			myExceptions.printStackTrace();
 		}
-		System.out.println();
-		my_list.dfsIterative(7);
-		System.out.println();
-		my_list.dfsRecursive(7);
 
+
+		System.out.println();
+		dfs.dfsIterative(7);
+		System.out.println();
+		dfs.dfsRecursive(7);
 
 //		Max_Heap_Sifting maxHeap = new Max_Heap_Sifting();
 //		maxHeap.test();
@@ -48,17 +59,5 @@ public class Main
 //
 ////		maxHeap.print_heap();
 //		minHeap.print_heap();
-
-
-//		System.out.println(maxHeap.heapMaximum());
-
-		//System.out.print("\nInput name of file with graph definition: ");
-		//fname = Console.ReadLine();
-
-//		Prim_Graph g = new Prim_Graph(fname);
-
-		//g.MST_Kruskal();
-
-		//g.showMST();
 	}
 }
