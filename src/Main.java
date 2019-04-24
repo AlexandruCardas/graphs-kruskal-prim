@@ -1,10 +1,12 @@
 import abstract_data_types.Adjacency_List;
 import abstract_data_types.Min_Heap;
 import abstract_data_types.MyExceptions;
+import prim.Prim_Graph;
 import searching.BFS;
 import searching.DFS;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Main
 {
@@ -29,7 +31,6 @@ public class Main
 		{
 			myExceptions.printStackTrace();
 		}
-
 
 		System.out.println();
 		dfs.dfsIterative(7);
@@ -57,7 +58,32 @@ public class Main
 //
 //		System.out.println();
 //
-////		maxHeap.print_heap();
+//		maxHeap.print_heap();
 //		minHeap.print_heap();
+
+		Scanner textScanner = new Scanner(System.in);
+		String fname1;
+		int starVert;
+		System.out.print("\nInput name of file with graph definition: ");
+		fname1 = textScanner.nextLine();
+		System.out.print("\nEnter starting vertext: ");
+		starVert = textScanner.nextInt();
+
+		Prim_Graph g = new Prim_Graph(fname1);
+
+		g.display();
+		g.MST_Prim(starVert);
+		g.showMST();
+
+		// kruskal
+		Scanner graphName = new Scanner(System.in);
+		String fname2;// = "myGraph.txt";
+		System.out.print("\nInput name of file with graph definition: ");
+		fname2 = graphName.nextLine();
+
+		Graph g1 = new Graph(fname2);
+
+		g1.MST_Kruskal();
+		g1.showMST();
 	}
 }
