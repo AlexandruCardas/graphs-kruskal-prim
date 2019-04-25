@@ -13,7 +13,7 @@ public class Main
 	public static void main(String[] args) throws IOException
 	{
 		// init files
-		String file_name = "data/graph2.txt";
+		String file_name = "data/graph.txt";
 		Adjacency_List my_list = new Adjacency_List(file_name);
 
 		BFS bfs = new BFS(my_list.getAdjacency_list(), my_list.getVertex_amount());
