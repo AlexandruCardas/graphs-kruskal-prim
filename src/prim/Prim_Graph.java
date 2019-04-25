@@ -6,16 +6,16 @@ import java.io.IOException;
 
 class Heap
 {
-	private int[] h; // heap array
-	private int[] heapPosition; // heapPosition[h[k]] == k
-	private int[] dist; // dist[v] = priority of v
+	private int[] heap;
+	private int[] heapPosition;
+	private int[] dist;
 
 	private int heapSize;
 
 	Heap(int maxSize, int[] dist, int[] heapPosition)
 	{
 		heapSize = 0;
-		h = new int[maxSize + 1];
+		heap = new int[maxSize + 1];
 		this.dist = dist;
 		this.heapPosition = heapPosition;
 	}
@@ -27,67 +27,67 @@ class Heap
 
 	void siftUp(int k)
 	{
-		int v = h[k];
+		int v = heap[k];
 		dist[0] = 0;
 
-		while (dist[v] < dist[h[k / 2]])
+		while (dist[v] < dist[heap[k / 2]])
 		{
-			h[k] = h[k / 2];
-			heapPosition[h[k]] = k;
+			heap[k] = heap[k / 2];
+			heapPosition[heap[k]] = k;
 			k = k / 2;
 		}
 
-		h[k] = v;
+		heap[k] = v;
 		heapPosition[v] = k;
 	}
 
 	private void siftDown(int k)
 	{
 		int v, j;
-		v = h[k];
+		v = heap[k];
 		j = 2 * k;
 
 		while (j <= heapSize)
 		{
 
-			if ((j + 1 <= heapSize) && dist[h[j]] > dist[h[j + 1]])
+			if ((j + 1 <= heapSize) && dist[heap[j]] > dist[heap[j + 1]])
 			{
 				j++;
 			}
 
-			if (dist[h[j]] >= dist[v])
+			if (dist[heap[j]] >= dist[v])
 			{
 				break;
 			}
 			else
 			{
 
-				h[k] = h[j];
+				heap[k] = heap[j];
 				k = j;
 				j = k * 2;
 			}
 		}
 
-		h[k] = v;
+		heap[k] = v;
 		heapPosition[v] = k;
 	}
 
 	void insert(int x)
 	{
-		h[++heapSize] = x;
+		heap[++heapSize] = x;
 		siftUp(heapSize);
 	}
 
 	int remove()
 	{
-		int v = h[1];
-		heapPosition[v] = 0;
-		h[heapSize + 1] = 0;
+		int vertex = heap[1];
+		heapPosition[vertex] = 0;
+		heap[heapSize + 1] = 0;
 
-		h[1] = h[heapSize--];
+		heap[1] = heap[heapSize--];
 		siftDown(1);
 
-		return v;
+		return vertex;
 	}
 }
 
@@ -110,7 +110,8 @@ public class Prim_Graph
 		String splits = "\\s+";
 		String line = reader.readLine();
 		String[] parts = line.split(splits);
-		System.out.println("Parts[] = " + parts[0] + " " + parts[1]);
+
+		System.out.println("Vertices = " + parts[0] + " Edges = " + parts[1]);
 
 		vertexAmount = Integer.parseInt(parts[0]);
 		int edgeAmount = Integer.parseInt(parts[1]);
@@ -124,7 +125,8 @@ public class Prim_Graph
 			adj[destination] = sentinel;
 		}
 
-		System.out.println("Reading edges from text file");
+		System.out.println("Vertex[1] -- Vertex[2] (weight)");
+
 		for (int edge = 1; edge <= edgeAmount; edge++)
 		{
 			line = reader.readLine();
@@ -133,7 +135,7 @@ public class Prim_Graph
 			destination = Integer.parseInt(parts[1]);
 			weight = Integer.parseInt(parts[2]);
 
-			System.out.println("Edge " + toChar(origin) + "--(" + weight + ")--" + toChar(destination));
+			System.out.println(toChar(origin) + "--" + toChar(destination) + "(" + weight + ")");
 
 			temp = new Node();
 			temp.vertex = destination;
@@ -156,14 +158,22 @@ public class Prim_Graph
 
 	public void display()
 	{
-		Node n;
+		Node node;
 
 		for (int v = 1; v <= vertexAmount; ++v)
 		{
 			System.out.print("\nadj[" + toChar(v) + "] ->");
-			for (n = adj[v]; n != sentinel; n = n.next)
+
+			for (node = adj[v]; node != sentinel; node = node.next)
 			{
-				System.out.print(" |" + toChar(n.vertex) + " | " + n.wgt + "| ->");
+				if (node.next == sentinel)
+				{
+					System.out.print(" |" + toChar(node.vertex) + " | " + node.wgt + "|");
+				}
+				else
+				{
+					System.out.print(" |" + toChar(node.vertex) + " | " + node.wgt + "| ->");
+				}
 			}
 		}
 		System.out.println();
@@ -171,18 +181,18 @@ public class Prim_Graph
 
 	public void MST_Prim(int s)
 	{
-		int wgt_sum = 0;
+		int weight_sum = 0;
 		int[] distance, parent, heapPosition;
 
 		distance = new int[vertexAmount + 1];
 		parent = new int[vertexAmount + 1];
 		heapPosition = new int[vertexAmount + 1];
 
-		for (int v = 0; v <= vertexAmount; v++)
+		for (int vertex = 0; vertex <= vertexAmount; vertex++)
 		{
-			distance[v] = Integer.MAX_VALUE;
-			parent[v] = 0;
-			heapPosition[v] = 0;
+			distance[vertex] = Integer.MAX_VALUE;
+			parent[vertex] = 0;
+			heapPosition[vertex] = 0;
 		}
 
 		distance[s] = 0;
@@ -206,13 +216,12 @@ public class Prim_Graph
 				{
 					if (distance[u] != Integer.MAX_VALUE)
 					{
-						wgt_sum -= distance[u];
+						weight_sum -= distance[u];
 					}
 
 					distance[u] = weight;
 					parent[u] = vertexRemoved;
-					wgt_sum += weight;
-					System.out.println(wgt_sum);
+					weight_sum += weight;
 
 					if (heapPosition[u] == 0)
 					{
@@ -226,18 +235,24 @@ public class Prim_Graph
 				node = node.next;
 			}
 		}
-
-		System.out.print("\n\nWeight of MST = " + wgt_sum + "\n");
+		System.out.println("\nWeight of MST = " + weight_sum);
 
 		mst = parent;
 	}
 
 	public void showMST()
 	{
-		System.out.print("\n\nMinimum Spanning tree parent array is:\n");
-		for (int v = 1; v <= vertexAmount; ++v)
+		System.out.println("\nMinimum Spanning tree parent array is:");
+		for (int vertex = 1; vertex <= vertexAmount; vertex++)
 		{
-			System.out.println(toChar(v) + " -> " + toChar(mst[v]));
+			if (toChar(mst[vertex]) == '@')
+			{
+				System.out.println(toChar(vertex));
+			}
+			else
+			{
+				System.out.println(toChar(vertex) + " -> " + toChar(mst[vertex]));
+			}
 		}
 		System.out.println();
 	}
