@@ -562,7 +562,8 @@ class HeapPrim
 }
 
 /**
- * Very similar adjacency list implementation as the previous one, but now we also use a sentinel to mark the end of the list for each parent vertex.
+ * Very similar adjacency list implementation as the previous one, but now we also
+ * use a sentinel to mark the end of the list for each parent vertex.
  */
 public class PrimGraph extends CommonFunctionsP
 {
@@ -673,6 +674,7 @@ public class PrimGraph extends CommonFunctionsP
 
 		while (!primHeap.isEmpty())
 		{
+			// get the smallest element of the heap which is the root
 			int vertexRemoved = primHeap.remove();
 
 			distance[vertexRemoved] = 0;
@@ -681,17 +683,17 @@ public class PrimGraph extends CommonFunctionsP
 
 			while (node != sentinel)
 			{
-				int u = node.vertex;
+				int vertex = node.vertex;
 				int weight = node.wgt;
 
 				// check if the current node's weight value is smaller than the weight stored in the distance array
-				if (weight < distance[u])
+				if (weight < distance[vertex])
 				{
-					parent[u] = vertexRemoved;
-					System.out.println("\n///// ========== PARENT [" + toChar(parent[u]) + "] to adjacent vertex " + toChar(u) );
+					parent[vertex] = vertexRemoved;
 
+					System.out.println("\n///// ========== PARENT [" + toChar(parent[vertex]) + "] to adjacent vertex " + toChar(vertex) );
 
-					System.out.println("\n///// Traverse from origin [" + toChar(parent[u]) + "] to adjacent vertex " + toChar(u) + " with a distance of " + weight);
+					System.out.println("\n///// Traverse from origin [" + toChar(parent[vertex]) + "] to adjacent vertex " + toChar(vertex) + " with a distance of " + weight);
 
 					System.out.print("Add the smallest weighted edge \t\t sum + " + weight);
 
@@ -700,31 +702,29 @@ public class PrimGraph extends CommonFunctionsP
 
 					System.out.println(" and results in a weight of " + weightSum);
 
-
 					// remove the previous larger weight from the sum
-					if (distance[u] != Integer.MAX_VALUE)
+					if (distance[vertex] != Integer.MAX_VALUE)
 					{
-						System.out.print("Remove the bigger weighted edge \t sum - " + distance[u]);
-						weightSum -= distance[u];
+						System.out.print("Remove the bigger weighted edge \t sum - " + distance[vertex]);
+						weightSum -= distance[vertex];
 						System.out.println(" and results in a weight of " + weightSum);
 					}
 					else
 					{
 						// swap if smaller
-						distance[u] = weight;
-						// populate the parent array
+						distance[vertex] = weight;
 					}
 
 					// check if the current vertex is inside the heap or else insert it
-					if (heapPosition[u] == 0)
+					if (heapPosition[vertex] == 0)
 					{
-						primHeap.insert(u);
+						primHeap.insert(vertex);
 					}
 					else
 					{
-						System.out.println("\n///// Sift up " + toChar(heapPosition[u]));
+						System.out.println("\n///// Sift up " + toChar(heapPosition[vertex]));
 
-						primHeap.siftUp(heapPosition[u]);
+						primHeap.siftUp(heapPosition[vertex]);
 					}
 				}
 
