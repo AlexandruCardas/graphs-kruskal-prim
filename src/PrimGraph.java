@@ -736,6 +736,7 @@ public class PrimGraph extends CommonFunctionsP
 		mst = parent;
 	}
 
+
 	private void showMST()
 	{
 		System.out.println("\nMinimum Spanning tree parent array is:");
