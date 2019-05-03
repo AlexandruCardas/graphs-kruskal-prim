@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-class Edge
+class Edge extends CommonFunctionsK
 {
 	int origin, destination, weight;
 
@@ -16,11 +16,6 @@ class Edge
 	void show()
 	{
 		System.out.print("Edge " + toChar(origin) + "--" + toChar(destination) + "(" + weight + ")" + "\n");
-	}
-
-	private char toChar(int u)
-	{
-		return (char) (u + 64);
 	}
 }
 
@@ -118,7 +113,6 @@ class UnionFindSets extends CommonFunctionsK
 		}
 	}
 
-
 	int findSet(int vertex)
 	{
 		while (vertex != treeParent[vertex])
@@ -135,9 +129,9 @@ class UnionFindSets extends CommonFunctionsK
 	*/
 	void union(int set1, int set2)
 	{
-		int xRoot = findSet(set1);
-		int yRoot = findSet(set2);
-		treeParent[yRoot] = xRoot;
+		int firstRoot = findSet(set1);
+		int secondRoot = findSet(set2);
+		treeParent[secondRoot] = firstRoot;
 	}
 
 	void showTrees()
@@ -186,7 +180,7 @@ class UnionFindSets extends CommonFunctionsK
 class KruskalGraph extends CommonFunctionsK
 {
 	private int vertexAmount, edgeAmount;
-	private Edge[] edge;
+	private Edge[] edgeArray;
 	private Edge[] mst;
 	private int totalWeight;
 
@@ -201,7 +195,7 @@ class KruskalGraph extends CommonFunctionsK
 
 		vertexAmount = Integer.parseInt(parts[0]);
 		edgeAmount = Integer.parseInt(parts[1]);
-		edge = new Edge[edgeAmount + 1];
+		edgeArray = new Edge[edgeAmount + 1];
 
 		System.out.println("Vertices = " + parts[0] + " Edges = " + parts[1]);
 		System.out.println("Vertex[1] -- Vertex[2] (weight)");
@@ -217,7 +211,7 @@ class KruskalGraph extends CommonFunctionsK
 
 			System.out.println("Edge " + toChar(origin) + "--" + toChar(destination) + "(" + weight + ")");
 
-			this.edge[edge] = new Edge(origin, destination, weight);
+			this.edgeArray[edge] = new Edge(origin, destination, weight);
 		}
 	}
 
@@ -228,7 +222,7 @@ class KruskalGraph extends CommonFunctionsK
 
 		for (int v = 1; v <= edgeAmount; ++v)
 		{
-			edge[v].show();
+			edgeArray[v].show();
 		}
 	}
 
@@ -242,7 +236,7 @@ class KruskalGraph extends CommonFunctionsK
 		totalWeight = 0;
 
 		mst = new Edge[vertexAmount - 1];
-		HeapKruskal h = new HeapKruskal(edgeAmount, edge);
+		HeapKruskal h = new HeapKruskal(edgeAmount, edgeArray);
 		partition = new UnionFindSets(vertexAmount);
 
 		partition.showSets();
@@ -250,7 +244,7 @@ class KruskalGraph extends CommonFunctionsK
 		while (i < vertexAmount - 1)
 		{
 			indexOfSmallestEdge = h.remove();
-			smallestEdge = edge[indexOfSmallestEdge];
+			smallestEdge = edgeArray[indexOfSmallestEdge];
 
 			originSet = partition.findSet(smallestEdge.origin);
 			destinationSet = partition.findSet(smallestEdge.destination);
