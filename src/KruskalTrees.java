@@ -4,18 +4,18 @@ import java.io.IOException;
 
 class Edge
 {
-	int origin, destination, wgt;
+	int origin, destination, weight;
 
 	Edge(int x, int y, int w)
 	{
 		this.origin = x;
 		this.destination = y;
-		this.wgt = w;
+		this.weight = w;
 	}
 
 	void show()
 	{
-		System.out.print("Edge " + toChar(origin) + "--" + wgt + "--" + toChar(destination) + "\n");
+		System.out.print("Edge " + toChar(origin) + "--" + toChar(destination) + "(" + weight + ")" + "\n");
 	}
 
 	private char toChar(int u)
@@ -24,21 +24,21 @@ class Edge
 	}
 }
 
-class Heap
+class HeapKruskal
 {
 	private int heapSize;
 	private Edge[] edge;
-	private int[] h;
+	private int[] heap;
 
-	Heap(int heapSize, Edge[] edge)
+	HeapKruskal(int heapSize, Edge[] edge)
 	{
 		this.heapSize = heapSize;
-		h = new int[heapSize + 1];
+		heap = new int[heapSize + 1];
 		this.edge = edge;
 
 		for (int i = 0; i <= heapSize; ++i)
 		{
-			h[i] = i;
+			heap[i] = i;
 		}
 
 		for (int i = heapSize / 2; i > 0; i--)
@@ -49,40 +49,60 @@ class Heap
 
 	private void siftDown(int k)
 	{
-		int e, j;
+		int parent, child;
 
-		e = h[k];
+		parent = heap[k];
 		while (2 * k <= heapSize)
 		{
 
-			j = 2 * k;
+			child = 2 * k;
 
-			if ((j < heapSize) && (edge[h[j + 1]].wgt < edge[h[j]].wgt))
+			if ((child < heapSize) && (edge[heap[child + 1]].weight < edge[heap[child]].weight))
 			{
-				j++;
+				child++;
 			}
 
-			if (edge[e].wgt <= edge[h[j]].wgt)
+			if (edge[parent].weight <= edge[heap[child]].weight)
 			{
 				break;
 			}
 
-			h[k] = h[j];
-			k = j;
+			heap[k] = heap[child];
+			k = child;
 		}
-		h[k] = e;
+		heap[k] = parent;
 	}
 
 	int remove()
 	{
-		h[0] = h[1];
-		h[1] = h[heapSize--];
+		heap[0] = heap[1];
+		heap[1] = heap[heapSize--];
 		siftDown(1);
-		return h[0];
+		return heap[0];
 	}
 }
 
-class UnionFindSets
+class CommonFunctionsK
+{
+	static char toChar(int u)
+	{
+		return (char) (u + 64);
+	}
+
+	static boolean isEmpty(Node root)
+	{
+		return root == null;
+	}
+
+	protected static void swap(int[] a, int i, int j)
+	{
+		int temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
+	}
+}
+
+class UnionFindSets extends CommonFunctionsK
 {
 	private int[] treeParent;
 	private int heapSize;
@@ -98,6 +118,7 @@ class UnionFindSets
 		}
 	}
 
+
 	int findSet(int vertex)
 	{
 		while (vertex != treeParent[vertex])
@@ -108,6 +129,10 @@ class UnionFindSets
 		return vertex;
 	}
 
+	/*
+	when we get two sets, we take the parent tree, we get the root vertex of the first set and we attach it to
+	the other set at the specified root node
+	*/
 	void union(int set1, int set2)
 	{
 		int xRoot = findSet(set1);
@@ -117,30 +142,33 @@ class UnionFindSets
 
 	void showTrees()
 	{
-		int i;
-		for (i = 1; i <= heapSize; ++i)
+		for (int i = 1; i <= heapSize; ++i)
 		{
 			System.out.print(toChar(i) + "->" + toChar(treeParent[i]) + "  ");
 		}
 		System.out.print("\n");
 	}
 
+	/**
+	 * Similar to Prim's visited edge function.
+	 */
 	void showSets()
 	{
 		int u, root;
-		int[] shown = new int[heapSize + 1];
+		boolean[] visited = new boolean[heapSize + 1];
 		for (u = 1; u <= heapSize; ++u)
 		{
 			root = findSet(u);
-			if (shown[root] != 1)
+			if (!visited[root])
 			{
 				showSet(root);
-				shown[root] = 1;
+				visited[root] = true;
 			}
 		}
 		System.out.print("\n");
 	}
 
+	// at first every vertex points to itself and has a set for itself
 	private void showSet(int root)
 	{
 		System.out.print("Set{");
@@ -153,122 +181,119 @@ class UnionFindSets
 		}
 		System.out.print("}  ");
 	}
-
-	private char toChar(int u)
-	{
-		return (char) (u + 64);
-	}
 }
 
-class Graph
+class KruskalGraph extends CommonFunctionsK
 {
-	private int V, E;
+	private int vertexAmount, edgeAmount;
 	private Edge[] edge;
 	private Edge[] mst;
 	private int totalWeight;
 
-	Graph(String graphFile) throws IOException
+	private KruskalGraph(String graphFile) throws IOException
 	{
-		int u, v;
-		int w, e;
-
 		FileReader fr = new FileReader(graphFile);
 		BufferedReader reader = new BufferedReader(fr);
 
 		String splits = "\\s+";
 		String line = reader.readLine();
 		String[] parts = line.split(splits);
-		System.out.println("Parts[] = " + parts[0] + " " + parts[1]);
 
-		V = Integer.parseInt(parts[0]);
-		E = Integer.parseInt(parts[1]);
+		vertexAmount = Integer.parseInt(parts[0]);
+		edgeAmount = Integer.parseInt(parts[1]);
+		edge = new Edge[edgeAmount + 1];
 
-		edge = new Edge[E + 1];
-
+		System.out.println("Vertices = " + parts[0] + " Edges = " + parts[1]);
+		System.out.println("Vertex[1] -- Vertex[2] (weight)");
 		System.out.println("Reading edges from text file");
-		for (e = 1; e <= E; ++e)
+
+		for (int edge = 1; edge <= edgeAmount; ++edge)
 		{
 			line = reader.readLine();
 			parts = line.split(splits);
-			u = Integer.parseInt(parts[0]);
-			v = Integer.parseInt(parts[1]);
-			w = Integer.parseInt(parts[2]);
+			int origin = Integer.parseInt(parts[0]);
+			int destination = Integer.parseInt(parts[1]);
+			int weight = Integer.parseInt(parts[2]);
 
-			System.out.println("Edge " + toChar(u) + "--(" + w + ")--" + toChar(v));
+			System.out.println("Edge " + toChar(origin) + "--" + toChar(destination) + "(" + weight + ")");
 
-			edge[e] = new Edge(u, v, w);
+			this.edge[edge] = new Edge(origin, destination, weight);
 		}
 	}
 
 	public void display()
 	{
-		int v;
 
 		System.out.println("\n\n Displaying the all the edges");
 
-		for (v = 1; v <= E; ++v)
+		for (int v = 1; v <= edgeAmount; ++v)
 		{
 			edge[v].show();
 		}
 	}
 
-	void MST_Kruskal()
+	private void MSTKruskal()
 	{
-		int ei, i = 0;
-		Edge e;
+		int indexOfSmallestEdge, i = 0;
+		Edge smallestEdge;
 		int originSet, destinationSet;
 		UnionFindSets partition;
 
 		totalWeight = 0;
 
-		mst = new Edge[V - 1];
-		Heap h = new Heap(E, edge);
-		partition = new UnionFindSets(V);
+		mst = new Edge[vertexAmount - 1];
+		HeapKruskal h = new HeapKruskal(edgeAmount, edge);
+		partition = new UnionFindSets(vertexAmount);
 
 		partition.showSets();
 
-		while (i < V - 1)
+		while (i < vertexAmount - 1)
 		{
-			ei = h.remove();
-			e = edge[ei];
+			indexOfSmallestEdge = h.remove();
+			smallestEdge = edge[indexOfSmallestEdge];
 
-			originSet = partition.findSet(e.origin);
-			destinationSet = partition.findSet(e.destination);
+			originSet = partition.findSet(smallestEdge.origin);
+			destinationSet = partition.findSet(smallestEdge.destination);
 
 			if (originSet != destinationSet)
 			{
-				mst[i] = e;
+				mst[i] = smallestEdge;
 				i++;
 
 				System.out.print("\n" + i + ": ");
-				e.show();
+				smallestEdge.show();
 
 				partition.union(originSet, destinationSet);
 				partition.showSets();
 				partition.showTrees();
 
-				totalWeight += e.wgt;
+				totalWeight += smallestEdge.weight;
 			}
 			else
 			{
 				System.out.print("\nIgnoring the edge");
-				e.show();
+				smallestEdge.show();
 			}
 		}
 	}
 
-	private char toChar(int u)
-	{
-		return (char) (u + 64);
-	}
-
-	void showMST()
+	private void showMST()
 	{
 		System.out.print("\nMinimum spanning tree build from following edges:\n");
-		for (int e = 0; e < V - 1; e++)
+		for (int edge = 0; edge < vertexAmount - 1; edge++)
 		{
-			mst[e].show();
+			mst[edge].show();
 		}
-		System.out.println("The total weight of the MST is: " + totalWeight);
+		System.out.println("\nWeight of the MST = " + totalWeight);
+	}
+
+	public static void main(String[] args) throws IOException
+	{
+		String fname2 = "myGraph.txt";
+
+		KruskalGraph graph = new KruskalGraph(fname2);
+
+		graph.MSTKruskal();
+		graph.showMST();
 	}
 }
