@@ -6,16 +6,16 @@ class Edge extends CommonFunctionsK
 {
 	int origin, destination, weight;
 
-	Edge(int x, int y, int w)
+	Edge(int origin, int destination, int weight)
 	{
-		this.origin = x;
-		this.destination = y;
-		this.weight = w;
+		this.origin = origin;
+		this.destination = destination;
+		this.weight = weight;
 	}
 
 	void show()
 	{
-		System.out.print("Edge " + toChar(origin) + "--" + toChar(destination) + "(" + weight + ")" + "\n");
+		System.out.print(toChar(origin) + "--" + toChar(destination) + "(" + weight + ")");
 	}
 }
 
@@ -101,7 +101,9 @@ class UnionFindSets extends CommonFunctionsK
 {
 	private int[] treeParent;
 	private int heapSize;
+	private int[] rank;
 
+	// constructor which makes all the vertices point to themselves first
 	UnionFindSets(int vertexAmount)
 	{
 		heapSize = vertexAmount;
@@ -115,12 +117,24 @@ class UnionFindSets extends CommonFunctionsK
 
 	int findSet(int vertex)
 	{
-		while (vertex != treeParent[vertex])
+		int root = vertex;
+		while (root != treeParent[root])
 		{
-			vertex = treeParent[vertex];
+			root = treeParent[root];
 		}
 
-		return vertex;
+		/*
+		this operation is called path compression, compress the path leading back to
+		the root which gives amortised time complexity
+		 */
+		while (vertex != root)
+		{
+			int newRoot = treeParent[vertex];
+			treeParent[vertex] = root;
+			vertex = newRoot;
+		}
+
+		return root;
 	}
 
 	/*
@@ -131,16 +145,19 @@ class UnionFindSets extends CommonFunctionsK
 	{
 		int firstRoot = findSet(set1);
 		int secondRoot = findSet(set2);
+
+		// merge the two sets together
 		treeParent[secondRoot] = firstRoot;
 	}
 
+	// display function to show what each vertex is attached to
 	void showTrees()
 	{
 		for (int i = 1; i <= heapSize; ++i)
 		{
-			System.out.print(toChar(i) + "->" + toChar(treeParent[i]) + "  ");
+			System.out.print(toChar(treeParent[i]) + "<-" + toChar(i) + "\t");
 		}
-		System.out.print("\n");
+		System.out.println();
 	}
 
 	/**
@@ -159,21 +176,21 @@ class UnionFindSets extends CommonFunctionsK
 				visited[root] = true;
 			}
 		}
-		System.out.print("\n");
+		System.out.println();
 	}
 
-	// at first every vertex points to itself and has a set for itself
+	// display the elements of each set
 	private void showSet(int root)
 	{
 		System.out.print("Set{");
-		for (int v = 1; v <= heapSize; ++v)
+		for (int vertex = 1; vertex <= heapSize; vertex++)
 		{
-			if (findSet(v) == root)
+			if (findSet(vertex) == root)
 			{
-				System.out.print(toChar(v) + " ");
+				System.out.print(toChar(vertex) + " ");
 			}
 		}
-		System.out.print("}  ");
+		System.out.print("} ");
 	}
 }
 
@@ -209,28 +226,17 @@ class KruskalGraph extends CommonFunctionsK
 			int destination = Integer.parseInt(parts[1]);
 			int weight = Integer.parseInt(parts[2]);
 
-			System.out.println("Edge " + toChar(origin) + "--" + toChar(destination) + "(" + weight + ")");
+			System.out.println(toChar(origin) + "--" + toChar(destination) + "(" + weight + ")");
 
 			this.edgeArray[edge] = new Edge(origin, destination, weight);
-		}
-	}
-
-	public void display()
-	{
-
-		System.out.println("\n\n Displaying the all the edges");
-
-		for (int v = 1; v <= edgeAmount; ++v)
-		{
-			edgeArray[v].show();
 		}
 	}
 
 	private void MSTKruskal()
 	{
 		int indexOfSmallestEdge, i = 0;
-		Edge smallestEdge;
-		int originSet, destinationSet;
+		Edge edge;
+		int firstSet, secondSet;
 		UnionFindSets partition;
 
 		totalWeight = 0;
@@ -244,39 +250,44 @@ class KruskalGraph extends CommonFunctionsK
 		while (i < vertexAmount - 1)
 		{
 			indexOfSmallestEdge = h.remove();
-			smallestEdge = edgeArray[indexOfSmallestEdge];
+			edge = edgeArray[indexOfSmallestEdge];
 
-			originSet = partition.findSet(smallestEdge.origin);
-			destinationSet = partition.findSet(smallestEdge.destination);
+			firstSet = partition.findSet(edge.origin);
+			secondSet = partition.findSet(edge.destination);
 
-			if (originSet != destinationSet)
+			// check if the sets will create a circle
+			if (firstSet != secondSet)
 			{
-				mst[i] = smallestEdge;
-				i++;
+				mst[i++] = edge;
 
-				System.out.print("\n" + i + ": ");
-				smallestEdge.show();
+				System.out.print("\n///// Edge " + i + ": ");
+				edge.show();
+				System.out.println();
 
-				partition.union(originSet, destinationSet);
+				// create the union between the two sets if there is
+				partition.union(firstSet, secondSet);
 				partition.showSets();
 				partition.showTrees();
 
-				totalWeight += smallestEdge.weight;
+				totalWeight += edge.weight;
 			}
 			else
 			{
-				System.out.print("\nIgnoring the edge");
-				smallestEdge.show();
+				System.out.print("\nIgnoring the edge\t");
+				edge.show();
+				System.out.println();
 			}
 		}
 	}
 
+	// display function
 	private void showMST()
 	{
 		System.out.print("\nMinimum spanning tree build from following edges:\n");
 		for (int edge = 0; edge < vertexAmount - 1; edge++)
 		{
 			mst[edge].show();
+			System.out.println();
 		}
 		System.out.println("\nWeight of the MST = " + totalWeight);
 	}
