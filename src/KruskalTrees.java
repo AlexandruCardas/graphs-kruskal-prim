@@ -101,7 +101,6 @@ class UnionFindSets extends CommonFunctionsK
 {
 	private int[] treeParent;
 	private int heapSize;
-	private int[] rank;
 
 	// constructor which makes all the vertices point to themselves first
 	UnionFindSets(int vertexAmount)
@@ -115,6 +114,14 @@ class UnionFindSets extends CommonFunctionsK
 		}
 	}
 
+	/**
+	 * Determine which subset a particular element is in. It returns the root element of it's cluster.
+	 * It can be determined whether two elements are in the same subset by comparing
+	 * the result of two findSet operations.
+	 *
+	 * @param vertex self explanatory
+	 * @return root node
+	 */
 	int findSet(int vertex)
 	{
 		int root = vertex;
@@ -230,26 +237,28 @@ class KruskalGraph extends CommonFunctionsK
 
 			this.edgeArray[edge] = new Edge(origin, destination, weight);
 		}
+
+		System.out.println();
 	}
 
 	private void MSTKruskal()
 	{
-		int indexOfSmallestEdge, i = 0;
-		Edge edge;
+		int indexOfSmallestEdge, vertex = 0;
 		int firstSet, secondSet;
+		Edge edge;
 		UnionFindSets partition;
 
 		totalWeight = 0;
 
 		mst = new Edge[vertexAmount - 1];
-		HeapKruskal h = new HeapKruskal(edgeAmount, edgeArray);
+		HeapKruskal heapKruskal = new HeapKruskal(edgeAmount, edgeArray);
 		partition = new UnionFindSets(vertexAmount);
 
 		partition.showSets();
 
-		while (i < vertexAmount - 1)
+		while (vertex < vertexAmount - 1)
 		{
-			indexOfSmallestEdge = h.remove();
+			indexOfSmallestEdge = heapKruskal.remove();
 			edge = edgeArray[indexOfSmallestEdge];
 
 			firstSet = partition.findSet(edge.origin);
@@ -258,13 +267,13 @@ class KruskalGraph extends CommonFunctionsK
 			// check if the sets will create a circle
 			if (firstSet != secondSet)
 			{
-				mst[i++] = edge;
+				mst[vertex++] = edge;
 
-				System.out.print("\n///// Edge " + i + ": ");
+				System.out.print("\n///// Edge " + vertex + ": ");
 				edge.show();
 				System.out.println();
 
-				// create the union between the two sets if there is
+				// create the union between the two sets using these partitions
 				partition.union(firstSet, secondSet);
 				partition.showSets();
 				partition.showTrees();
