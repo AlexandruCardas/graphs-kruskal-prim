@@ -688,6 +688,8 @@ public class PrimGraph extends CommonFunctionsP
 				if (weight < distance[u])
 				{
 					parent[u] = vertexRemoved;
+					System.out.println("\n///// ========== PARENT [" + toChar(parent[u]) + "] to adjacent vertex " + toChar(u) );
+
 
 					System.out.println("\n///// Traverse from origin [" + toChar(parent[u]) + "] to adjacent vertex " + toChar(u) + " with a distance of " + weight);
 
