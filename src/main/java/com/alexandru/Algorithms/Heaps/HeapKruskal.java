@@ -1,6 +1,5 @@
-package Algorithms.Graphs;
-
-import Algorithms.DataStructures.Edge;
+package com.alexandru.Algorithms.Heaps;
+import com.alexandru.Algorithms.DataStructures.Edge;
 
 public class HeapKruskal
 {

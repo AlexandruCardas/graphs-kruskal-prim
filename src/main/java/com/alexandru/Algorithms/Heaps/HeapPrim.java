@@ -1,4 +1,4 @@
-package Algorithms.Graphs;
+package com.alexandru.Algorithms.Heaps;
 
 /**
  * Helper class used for repeating functions
@@ -48,7 +48,7 @@ public class HeapPrim
 		heapPosition[value] = k;
 	}
 
-	void siftDown(int k)
+	private void siftDown(int k)
 	{
 		int value, node;
 
