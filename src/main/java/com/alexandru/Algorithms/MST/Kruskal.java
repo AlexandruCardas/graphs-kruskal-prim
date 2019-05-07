@@ -1,22 +1,23 @@
-package Algorithms.MST;
+package com.alexandru.Algorithms.MST;
 
-import Algorithms.DataStructures.Edge;
-import Algorithms.DataStructures.UnionFindSets;
-import Algorithms.Graphs.HeapKruskal;
-import Algorithms.Utils.CommonFunctions;
+
+import com.alexandru.Algorithms.DataStructures.Edge;
+import com.alexandru.Algorithms.DataStructures.UnionFindSets;
+import com.alexandru.Algorithms.Heaps.HeapKruskal;
+import com.alexandru.Algorithms.Utils.CommonFunctions;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class KruskalGraph extends CommonFunctions
+public class Kruskal extends CommonFunctions
 {
 	private int vertexAmount, edgeAmount;
 	private Edge[] edgeArray;
 	private Edge[] mst;
 	private int totalWeight;
 
-	public KruskalGraph(String graphFile) throws IOException
+	public Kruskal(String graphFile) throws IOException
 	{
 		FileReader fr = new FileReader(graphFile);
 		BufferedReader reader = new BufferedReader(fr);
