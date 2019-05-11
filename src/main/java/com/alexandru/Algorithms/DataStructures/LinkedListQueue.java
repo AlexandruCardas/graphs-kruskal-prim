@@ -5,12 +5,12 @@ import com.alexandru.Algorithms.Exceptions.MyExceptions;
 import com.alexandru.Algorithms.Utils.CommonFunctions;
 
 // class taken from previous labs
-public class QueueLL extends CommonFunctions implements Queue
+public class LinkedListQueue extends CommonFunctions implements Queue
 {
 	private Node head;
 	private Node tail;
 
-	public QueueLL()
+	public LinkedListQueue()
 	{
 		head = null;
 		tail = null;
@@ -39,7 +39,7 @@ public class QueueLL extends CommonFunctions implements Queue
 	{
 		if (isEmpty())
 		{
-			throw new MyExceptions("Algorithms.DataStructures.Queue is empty");
+			throw new MyExceptions("Queue is empty");
 		}
 		int value = head.vertex;
 

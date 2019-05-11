@@ -2,7 +2,7 @@ package com.alexandru.Algorithms.Traversal;
 
 
 import com.alexandru.Algorithms.DataStructures.Node;
-import com.alexandru.Algorithms.DataStructures.QueueLL;
+import com.alexandru.Algorithms.DataStructures.LinkedListQueue;
 import com.alexandru.Algorithms.Exceptions.MyExceptions;
 import com.alexandru.Algorithms.Utils.CommonFunctions;
 
@@ -13,7 +13,7 @@ public class BFS extends CommonFunctions
 {
 	private Node[] adjacencyList;
 	private int vertexAmount;
-	private QueueLL queue = new QueueLL();
+	private LinkedListQueue queue = new LinkedListQueue();
 
 	public BFS(Node[] adjacencyList, int vertexAmount)
 	{
