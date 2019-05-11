@@ -4,11 +4,11 @@ import com.alexandru.Algorithms.Exceptions.MyExceptions;
 import com.alexandru.Algorithms.Utils.CommonFunctions;
 
 // stack class used from previous labs
-public class Stack extends CommonFunctions
+public class LinkedListStack extends CommonFunctions
 {
 	private Node top;
 
-	public Stack()
+	public LinkedListStack()
 	{
 		top = null;
 	}
@@ -25,7 +25,7 @@ public class Stack extends CommonFunctions
 	{
 		if (isEmpty())
 		{
-			throw new MyExceptions("Algorithms.MST.Stack is empty");
+			throw new MyExceptions("Algorithms.MST.LinkedListStack is empty");
 		}
 
 		int x = top.vertex;

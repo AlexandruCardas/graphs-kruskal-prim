@@ -2,7 +2,7 @@ package com.alexandru.Algorithms.Traversal;
 
 
 import com.alexandru.Algorithms.DataStructures.Node;
-import com.alexandru.Algorithms.DataStructures.Stack;
+import com.alexandru.Algorithms.DataStructures.LinkedListStack;
 import com.alexandru.Algorithms.Exceptions.MyExceptions;
 import com.alexandru.Algorithms.Utils.CommonFunctions;
 
@@ -10,7 +10,7 @@ public class DFS extends CommonFunctions
 {
 	private Node[] adjacencyList;
 	private int vertexAmount;
-	private Stack stack = new Stack();
+	private LinkedListStack linkedListStack = new LinkedListStack();
 	private Node[] adj;
 
 	public DFS(Node[] adjacencyList, int vertexAmount)
@@ -29,15 +29,15 @@ public class DFS extends CommonFunctions
 		Node[] adj = adjacencyList.clone();
 		boolean[] visited = new boolean[vertexAmount + 1];
 
-		// push the starting point of the graph onto the stack
-		stack.push(s);
+		// push the starting point of the graph onto the linkedListStack
+		linkedListStack.push(s);
 		int v = 0;
 
-		while (!stack.isEmpty())
+		while (!linkedListStack.isEmpty())
 		{
 			try
 			{
-				v = stack.pop();
+				v = linkedListStack.pop();
 			} catch (MyExceptions myExceptions)
 			{
 				myExceptions.printStackTrace();
@@ -53,8 +53,8 @@ public class DFS extends CommonFunctions
 				{
 					if (!visited[adj[v].vertex])
 					{
-						// push the child of the node onto the stack
-						stack.push(adj[v].vertex);
+						// push the child of the node onto the linkedListStack
+						linkedListStack.push(adj[v].vertex);
 					}
 
 					// go to the next node linked to it
@@ -65,7 +65,7 @@ public class DFS extends CommonFunctions
 	}
 
 	/**
-	 * This class doesn't use a stack, but it does use recursion which resembles a stack for operations.
+	 * This class doesn't use a linkedListStack, but it does use recursion which resembles a linkedListStack for operations.
 	 * Everything surrounded by square brackets constitutes the final traversal. ex: [A] marked as visited
 	 *
 	 * @param s used as the starting node for the graph traversal
