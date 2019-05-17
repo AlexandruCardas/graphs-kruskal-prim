@@ -19,8 +19,8 @@ public class App
 	{
 		int starVert;
 
-		String fileName1 = "/home/calexc95/IdeaProjects/java-graphs-kruskal-prim/src/main/resources/myGraph.txt";
-		AdjacencyList myList = new AdjacencyList(fileName1);
+		String fileName = "C:\\Users\\calex\\GitHub\\graphs\\src\\main\\resources\\myGraph.txt";
+		AdjacencyList myList = new AdjacencyList(fileName);
 
 		BFS bfs = new BFS(myList.getAdjacencyList(), myList.getVertexAmount());
 		DFS dfs = new DFS(myList.getAdjacencyList(), myList.getVertexAmount());
@@ -53,17 +53,16 @@ public class App
 
 		Scanner textScanner = new Scanner(System.in);
 
-		String fileName2 = "/home/calexc95/IdeaProjects/java-graphs-kruskal-prim/src/main/resources/myGraph.txt";
 		System.out.print("\nEnter starting vertex: ");
 		starVert = textScanner.nextInt();
 
-		Prim graph = new Prim(fileName2);
+		Prim graph = new Prim(fileName);
 
 		graph.display();
 		graph.MSTPrim(starVert);
 		graph.showMST();
 
-		Kruskal graph2 = new Kruskal(fileName1);
+		Kruskal graph2 = new Kruskal(fileName);
 
 		graph2.MSTKruskal();
 		graph2.showMST();
