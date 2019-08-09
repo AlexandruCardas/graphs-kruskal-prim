@@ -19,7 +19,7 @@ public class App
 	{
 		int starVert;
 
-		String fileName = "C:\\Users\\calex\\GitHub\\graphs\\src\\main\\resources\\myGraph.txt";
+		String fileName = "src/main/resources/myGraph.txt";
 		AdjacencyList myList = new AdjacencyList(fileName);
 
 		BFS bfs = new BFS(myList.getAdjacencyList(), myList.getVertexAmount());
